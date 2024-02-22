@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ConsoleApp5
 {
@@ -13,7 +14,39 @@ namespace ConsoleApp5
             {
                 Data = _data;
             }
+                
+            public void Add(OneChain newNode)
+            {
 
+                if (Next == null || Next.Data > newNode.Data)
+                {
+                    newNode.Next = Next;
+                    Next = newNode;
+                }
+                else
+                {
+                    Next.Add(newNode);
+                }
+
+
+            }
+
+            public void Remove(OneChain node)
+            {
+                if (node == null || this.Next == null)
+                    return;
+
+                if (this.Next == node)
+                {
+                    this.Next = this.Next.Next;
+                }
+                else
+                {
+                    this.Next.Remove(node);
+                }
+
+
+            }
         }
         static void Main(string[] args)
         {
@@ -22,10 +55,17 @@ namespace ConsoleApp5
             OneChain node1 = new OneChain(1);
             head = node1;
 
-            OneChain node2 = new OneChain(2);
-            node1.Next = node2;
-            OneChain node3 = new OneChain(3);
-            node2.Next = node3;
+            OneChain node2 = new OneChain(3);
+            head.Add(node2);
+
+
+            head.Remove(node2);
+            OneChain node3 = new OneChain(2);
+            head.Add(node3);
+
+            
+       
+
 
 
             OneChain item = head;
@@ -33,10 +73,7 @@ namespace ConsoleApp5
             {
                 Console.WriteLine(item.Data);
                 item = item.Next;
-            }
-            
-           
-            
+            }            
         }
     }
 }
